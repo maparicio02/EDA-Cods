@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palabras Reservadas PHP</title>
+    <style>
+        .suggestions {
+            border: 1px solid #ccc;
+            max-width: 300px;
+            display: none;
+            position: absolute;
+            background-color: #fff;
+        }
+        .suggestions ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .suggestions li {
+            padding: 8px;
+            cursor: pointer;
+        }
+        .suggestions li:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: relative;">
+        <input type="text" id="searchInput" placeholder="Type to search...">
+        <div class="suggestions" id="suggestionsBox">
+            <ul id="suggestionsList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const suggestions = ['apple', 'application', 'apartment', 'apparatus', 'appendix'];
+        const searchInput = document.getElementById('searchInput');
+        const suggestionsBox = document.getElementById('suggestionsBox');
+        const suggestionsList = document.getElementById('suggestionsList');
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            suggestionsList.innerHTML = '';
+            
+            if (query.length > 0) {
+                const filteredSuggestions = suggestions.filter(suggestion => 
+                    suggestion.toLowerCase().startsWith(query)
+                );
+                
+                filteredSuggestions.forEach(suggestion => {
+                    const li = document.createElement('li');
+                    li.textContent = suggestion;
+                    li.addEventListener('click', function() {
+                        searchInput.value = suggestion;
+                        suggestionsBox.style.display = 'none';
+                    });
+                    suggestionsList.appendChild(li);
+                });
+
+                suggestionsBox.style.display = filteredSuggestions.length > 0 ? 'block' : 'none';
+            } else {
+                suggestionsBox.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', function(event) {
+            if (event.target !== searchInput) {
+                suggestionsBox.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
